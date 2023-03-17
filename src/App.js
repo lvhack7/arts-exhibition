@@ -1,24 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  Switch,
+  Route,
+  Redirect,
+  Router
+} from "react-router-dom";
+import Home from "./pages/Home";
+import Gallery from "./pages/Gallery";
+import Contact from "./pages/Contact";
+import Auth from "./pages/Auth";
+import Admin from "./pages/Admin";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import About from "./pages/About";
+import history from "./history";
 
 function App() {
+  const loggedIn = localStorage.getItem("loggedIn")
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router history={history}>
+      <Header />
+      <Switch>
+        <Route
+          path="/home"
+          component={Home}
+        />
+        <Route
+          path="/gallery"
+          component={Gallery}
+        />
+        <Route
+          path="/contact"
+          component={Contact}
+        />
+        <Route
+          path="/about"
+          component={About}
+        />
+        {loggedIn ?
+          <Route
+            path="/admin"
+            component={Admin}
+          />
+          :
+          <Route
+            path="/auth"
+            component={Auth}
+          />
+        }
+        <Redirect from="*" to="/home" />
+      </Switch>
+      <Footer />
+    </Router>
   );
 }
 
